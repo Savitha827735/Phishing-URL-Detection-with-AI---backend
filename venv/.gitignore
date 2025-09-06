@@ -1,0 +1,25 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# Logs
+*.log
+
+# Dataset (large files, you don't want to push)
+phishing_dataset.csv
+
+# Model files (optional, can be trained on Render)
+kaggle_phishing_model.joblib
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VSCode settings
+.vscode/

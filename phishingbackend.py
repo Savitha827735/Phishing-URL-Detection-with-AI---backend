@@ -231,8 +231,7 @@ def home():
 
 
 @app.route('/predict', methods=['POST'])
-def predict_url():
-   @app.route('/predict', methods=['POST'])
+
 def predict_url():
     try:
         data = request.get_json()

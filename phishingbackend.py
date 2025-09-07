@@ -232,18 +232,26 @@ def home():
 
 @app.route('/predict', methods=['POST'])
 def predict_url():
+   @app.route('/predict', methods=['POST'])
+def predict_url():
     try:
-        if not detector.model_trained:
-            return jsonify({
-                'error': 'Model not trained yet. Please train the model first.',
-                'instructions': 'Download the Kaggle dataset and call /train endpoint'
-            }), 503
-
         data = request.get_json()
         url = data.get('url', '').strip()
 
         if not url:
             return jsonify({'error': 'URL is required'}), 400
+
+        # ✅ Auto-train if model not trained yet
+        if not detector.model_trained:
+            csv_path = 'phishing_dataset.csv'
+            if not os.path.exists(csv_path):
+                return jsonify({
+                    'error': 'Dataset not found. Please download from Kaggle.',
+                    'instructions': 'https://www.kaggle.com/datasets/akashkr/phishing-website-dataset'
+                }), 503
+
+            # Train the model automatically
+            detector.train_with_kaggle_data(csv_path)
 
         # Make prediction
         result = detector.predict(url)
@@ -313,6 +321,7 @@ def predict_url():
 
     except Exception as e:
         return jsonify({'error': f'Prediction failed: {str(e)}'}), 500
+
 
 
 @app.route('/train', methods=['POST'])
